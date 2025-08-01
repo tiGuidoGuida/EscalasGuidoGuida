@@ -1,157 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enfermagem</title>
-    <link rel="icon" href="assets/img/logo-icon.png" />
-    <link rel="stylesheet" href="./style.css" />
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-      crossorigin="anonymous"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escalas - Enfermagem e Administrativa</title>
+  <link rel="icon" href="assets/img/logo-icon.png" />
+  <link rel="stylesheet" href="./style.css" />
 
-    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
 
-    <!-- Custom styles for this template -->
+  <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Icons bootstrap -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
-    />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 
-    <!-- jQuery -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
+  <script>
+    let countdown = 30;
+    function startTimer() {
+      const display = document.getElementById("timer-display");
+      const interval = setInterval(() => {
+        countdown--;
+        display.textContent = countdown;
+        if (countdown <= 0) {
+          clearInterval(interval);
+          window.location.href = "encerrado.html";
+        }
+      }, 1000);
+    }
+    window.onload = startTimer;
+  </script>
+</head>
 
-    <!-- Popper.js, necessário para alguns componentes do Bootstrap -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"
-      integrity="sha384-nXKdBd84RhiMDR7bYlD0OGK9nPoNR+0V3L0Sh/l5Q/CiQl8DOJmtYVaebM5A0fF0"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
+<body>
+  <script id="replace_with_navbar" src="assets/dist/js/nav.js"></script>
 
-    <script id="replace_with_navbar" src="assets/dist/js/nav.js"></script>
-
-     <div class="container">
-      <div
-        class="row d-flex align-items-center justify-content-between"
-        style="margin-top: 2.5rem; padding: 0.5rem 0"
-      >
-        <div class="col">
-          <a class="navbar-brand" href="index.html"
-            ><img
-              src="img/logoAlphaMod.png"
-              style="max-height: 70px"
-              alt=""
-          /></a>
-        </div>
-        <!-- <div class="col d-flex justify-content-center">
-          <a class="navbar-brand" href="colorfulApril.html"
-            ><img src="assets/img/autism.jpg" style="max-height: 90px" alt=""
-          /></a>
-        </div> -->
-        <div class="col" style="display: flex; justify-content: end">
-          <a class="navbar-brand" href="#"
-            ><img src="img/logoPoa.png" style="max-height: 80px" alt=""
-          /></a>
-        </div>
+  <div class="container">
+    <div class="row d-flex align-items-center justify-content-between"
+      style="margin-top: 2.5rem; padding: 0.5rem 0">
+      <div class="col">
+        <a class="navbar-brand" href="index.html"><img src="img/logoAlphaMod.png" style="max-height: 70px" alt="" /></a>
+      </div>
+      <div class="col" style="display: flex; justify-content: end">
+        <a class="navbar-brand" href="#"><img src="img/logoPoa.png" style="max-height: 80px" alt="" /></a>
       </div>
     </div>
-    <main>
-        <div class="alert alert-warning text-center" role="alert">
-  Tempo restante para visualização: <strong><span id="timer-display">30</span></strong> segundos
-</div>
+  </div>
 
+  <div class="alert alert-warning text-center" role="alert">
+    Tempo restante para visualização: <strong><span id="timer-display">30</span></strong> segundos
+  </div>
 
-      <div class="container">
-        <div class="row d-flex justify-content-center">
-          <div class="mb-4">
-            <h1 class="text-center py-4 fst-italic border-bottom">
-              Escala Colaboradores Guido Guida - Poá
-            </h1>
-          </div>
+  <main>
+    <div class="container text-center mt-4">
+      <h1 class="mb-4">Escala Enfermagem - Agosto 2025</h1>
+      <iframe src="./nursing/ilovepdf_merged (1).pdf" width="100%" height="600px"
+        style="border:1px solid #ccc;"></iframe>
 
-          <div class="p-2 col-md-6">
-            <a href="./administrative/ESCALAS AGOSTO 2025_removed.pdf"
-              class="text-decoration-none"
-              style="color: var(--default)"
-             
-            >
-              <div class="card shadow h-100">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Administrativa</h5>
-                  <p class="card-text" style="color: black">Agosto 2025</p>
-                  <span class="visually-hidden">unread messages</span>
+      <h1 class="mt-5 mb-4">Escala Administrativa - Agosto 2025</h1>
+      <iframe src="./administrative/ESCALAS AGOSTO 2025_removed.pdf" width="100%" height="600px"
+        style="border:1px solid #ccc;"></iframe>
+    </div>
+  </main>
 
-                  <i class="bi bi-file-earmark-pdf fs-2"></i>
-                </div>
-              </div>
-            </a>
-          </div>
+  <script id="replace_with_footer" src="assets/dist/js/footer.js"></script>
+  <script src="/assets/dist/js/main.js"></script>
 
-          <div class="p-2 col-md-6">
-            <a
-              href="./nursing/ilovepdf_merged (1).pdf"
-              class="text-decoration-none"
-              style="color: var(--default)"
-        
-            >
-              <div class="card shadow h-100">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Enfermagem</h5>
-                  <p class="card-text" style="color: black">Agosto 2025</p>
-                  <span class="visually-hidden">unread messages</span>
-                  <i class="bi bi-file-earmark-pdf fs-2"></i>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </main>
-    <script id="replace_with_footer" src="assets/dist/js/footer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+  </script>
+</body>
 
-    <!-- main.js -->
-    <script src="/assets/dist/js/main.js"></script>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-      crossorigin="anonymous"
-    ></script>
-
-    <script>
-  let countdown = 30;
-  function startTimer() {
-    const timerDisplay = document.getElementById("timer-display");
-    const interval = setInterval(() => {
-      countdown--;
-      timerDisplay.textContent = countdown;
-      if (countdown <= 0) {
-        clearInterval(interval);
-        // Redirecionar para a página de "encerrado"
-        window.location.href = "encerrado.html";
-      }
-    }, 1000);
-  }
-
-  window.onload = startTimer;
-</script>
-
-  </body>
 </html>
