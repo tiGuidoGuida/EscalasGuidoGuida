@@ -73,6 +73,11 @@
       </div>
     </div>
     <main>
+        <div class="alert alert-warning text-center" role="alert">
+  Tempo restante para visualização: <strong><span id="timer-display">30</span></strong> segundos
+</div>
+
+
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="mb-4">
@@ -129,5 +134,24 @@
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+  let countdown = 30;
+  function startTimer() {
+    const timerDisplay = document.getElementById("timer-display");
+    const interval = setInterval(() => {
+      countdown--;
+      timerDisplay.textContent = countdown;
+      if (countdown <= 0) {
+        clearInterval(interval);
+        // Redirecionar para a página de "encerrado"
+        window.location.href = "encerrado.html";
+      }
+    }, 1000);
+  }
+
+  window.onload = startTimer;
+</script>
+
   </body>
 </html>
