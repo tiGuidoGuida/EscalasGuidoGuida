@@ -1,0 +1,97 @@
+.blog-header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.blog-header-logo {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman',
+    serif
+    /*rtl:Amiri, Georgia, "Times New Roman", serif*/
+  ;
+  font-size: 2.25rem;
+}
+
+.blog-header-logo:hover {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Roboto', sans-serif;
+}
+
+.display-4 {
+  font-size: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .display-4 {
+    font-size: 3rem;
+  }
+}
+
+.flex-auto {
+  flex: 0 0 auto;
+}
+
+.h-250 {
+  height: 250px;
+}
+
+@media (min-width: 768px) {
+  .h-md-250 {
+    height: 250px;
+  }
+}
+
+/* Pagination */
+.blog-pagination {
+  margin-bottom: 4rem;
+}
+
+/*
+ * Blog posts
+ */
+.blog-post {
+  margin-bottom: 4rem;
+}
+
+.blog-post-title {
+  font-size: 2.5rem;
+}
+
+.blog-post-meta {
+  margin-bottom: 1.25rem;
+  color: #727272;
+}
+
+/*
+ * Footer
+ */
+.blog-footer {
+  padding: 2.5rem 0;
+  color: #727272;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: 0.05rem solid #e5e5e5;
+}
+
+/* Variaveis */
+:root {
+  /* Colors  */
+  --light: #C3C3C3;
+  --default: #ff8c00;
+  /*Cor novembro azul: #054f77*/
+  --defaultHover: #000;
+  --white: #fff;
+  --black: #000;
+  --gray-300: #000000;
+  --green-100: #c4d6d9;
+  --green-200: #7ca4a9;
+  --green-300: #6c9ca4;
+  --green-500: #0b5860;
+
+}
