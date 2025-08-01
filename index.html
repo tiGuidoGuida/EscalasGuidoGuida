@@ -4,19 +4,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Escalas - Enfermagem e Administrativa</title>
   <link rel="icon" href="assets/img/logo-icon.png" />
   <link rel="stylesheet" href="./style.css" />
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
-
+    crossorigin="anonymous" />
   <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+  <style>
+    .pdf-container {
+      border: 1px solid #ccc;
+      width: 100%;
+      height: 80vh;
+      overflow: auto;
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto !important;
+    }
+
+    .pdf-controls {
+      margin: 0.5rem 0 1rem;
+      text-align: center;
+    }
+
+    .pdf-controls button {
+      margin: 0 0.5rem;
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
   <script>
     let countdown = 30;
@@ -33,14 +58,14 @@
     }
     window.onload = startTimer;
   </script>
+
 </head>
 
 <body>
   <script id="replace_with_navbar" src="assets/dist/js/nav.js"></script>
 
   <div class="container">
-    <div class="row d-flex align-items-center justify-content-between"
-      style="margin-top: 2.5rem; padding: 0.5rem 0">
+    <div class="row d-flex align-items-center justify-content-between" style="margin-top: 2.5rem; padding: 0.5rem 0">
       <div class="col">
         <a class="navbar-brand" href="index.html"><img src="img/logoAlphaMod.png" style="max-height: 70px" alt="" /></a>
       </div>
@@ -56,22 +81,153 @@
 
   <main>
     <div class="container text-center mt-4">
-      <h1 class="mb-4">Escala Enfermagem - Agosto 2025</h1>
-      <iframe src="./nursing/ilovepdf_merged (1).pdf" width="100%" height="600px"
-        style="border:1px solid #ccc;"></iframe>
 
-      <h1 class="mt-5 mb-4">Escala Administrativa - Agosto 2025</h1>
-      <iframe src="./administrative/ESCALAS AGOSTO 2025_removed.pdf" width="100%" height="600px"
-        style="border:1px solid #ccc;"></iframe>
+      <h1 class="mb-2">Escala Enfermagem - Agosto 2025</h1>
+
+      <div class="pdf-controls">
+        <button id="prev-page-enf" class="btn btn-primary" type="button" disabled>
+          <i class="bi bi-arrow-left"></i> Anterior
+        </button>
+        <span>Página <span id="page-num-enf">1</span> de <span id="page-count-enf">--</span></span>
+        <button id="next-page-enf" class="btn btn-primary" type="button">
+          Próxima <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="pdf-container">
+        <canvas id="pdf-render-enf"></canvas>
+      </div>
+
+      <h1 class="mt-5 mb-2">Escala Administrativa - Agosto 2025</h1>
+
+      <div class="pdf-controls">
+        <button id="prev-page-admin" class="btn btn-primary" type="button" disabled>
+          <i class="bi bi-arrow-left"></i> Anterior
+        </button>
+        <span>Página <span id="page-num-admin">1</span> de <span id="page-count-admin">--</span></span>
+        <button id="next-page-admin" class="btn btn-primary" type="button">
+          Próxima <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="pdf-container">
+        <canvas id="pdf-render-admin"></canvas>
+      </div>
     </div>
   </main>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+    // Visualizador PDF - genérico
+    function PDFViewer(pdfUrl, canvasId, prevBtnId, nextBtnId, pageNumId, pageCountId) {
+      this.pdfDoc = null;
+      this.pageNum = 1;
+      this.pageRendering = false;
+      this.pageNumPending = null;
+      this.canvas = document.getElementById(canvasId);
+      this.ctx = this.canvas.getContext('2d');
+      this.prevBtn = document.getElementById(prevBtnId);
+      this.nextBtn = document.getElementById(nextBtnId);
+      this.pageNumSpan = document.getElementById(pageNumId);
+      this.pageCountSpan = document.getElementById(pageCountId);
+      this.pdfUrl = pdfUrl;
+
+      this.loadDocument = function () {
+        pdfjsLib.getDocument(this.pdfUrl).promise.then((pdfDoc_) => {
+          this.pdfDoc = pdfDoc_;
+          this.pageCountSpan.textContent = this.pdfDoc.numPages;
+          this.renderPage(this.pageNum);
+          this.updateButtons();
+        }).catch(err => {
+          this.canvas.parentElement.innerHTML = `<p class="text-danger">Erro ao carregar PDF: ${err.message}</p>`;
+        });
+      };
+
+      this.renderPage = function (num) {
+        this.pageRendering = true;
+
+        this.pdfDoc.getPage(num).then((page) => {
+          const scale = 1.5;
+          const viewport = page.getViewport({ scale: scale });
+          this.canvas.height = viewport.height;
+          this.canvas.width = viewport.width;
+
+          const renderContext = {
+            canvasContext: this.ctx,
+            viewport: viewport,
+          };
+
+          const renderTask = page.render(renderContext);
+
+          renderTask.promise.then(() => {
+            this.pageRendering = false;
+            if (this.pageNumPending !== null) {
+              this.renderPage(this.pageNumPending);
+              this.pageNumPending = null;
+            }
+          });
+        });
+
+        this.pageNumSpan.textContent = num;
+        this.pageNum = num;
+        this.updateButtons();
+      };
+
+      this.queueRenderPage = function (num) {
+        if (this.pageRendering) {
+          this.pageNumPending = num;
+        } else {
+          this.renderPage(num);
+        }
+      };
+
+      this.onPrevPage = () => {
+        if (this.pageNum <= 1) return;
+        this.queueRenderPage(this.pageNum - 1);
+      };
+
+      this.onNextPage = () => {
+        if (this.pageNum >= this.pdfDoc.numPages) return;
+        this.queueRenderPage(this.pageNum + 1);
+      };
+
+      this.updateButtons = function () {
+        this.prevBtn.disabled = this.pageNum <= 1;
+        this.nextBtn.disabled = this.pageNum >= this.pdfDoc.numPages;
+      };
+
+      this.prevBtn.addEventListener('click', this.onPrevPage);
+      this.nextBtn.addEventListener('click', this.onNextPage);
+
+      this.loadDocument();
+    }
+
+    // Criar visualizadores para cada PDF
+    const viewerEnf = new PDFViewer(
+      './nursing/ilovepdf_merged (1).pdf',
+      'pdf-render-enf',
+      'prev-page-enf',
+      'next-page-enf',
+      'page-num-enf',
+      'page-count-enf'
+    );
+
+    const viewerAdmin = new PDFViewer(
+      './administrative/ESCALAS AGOSTO 2025_removed.pdf',
+      'pdf-render-admin',
+      'prev-page-admin',
+      'next-page-admin',
+      'page-num-admin',
+      'page-count-admin'
+    );
+  </script>
 
   <script id="replace_with_footer" src="assets/dist/js/footer.js"></script>
   <script src="/assets/dist/js/main.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
-  </script>
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
